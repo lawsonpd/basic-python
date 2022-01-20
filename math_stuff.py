@@ -10,7 +10,7 @@ def factorial(n:int) -> int:
        return n * factorial(n-1)
 
 
-def fib(n:int, cache:dict={}):
+def fib(n:int, cache:dict={}) -> int:
     '''
         Return nth Fibonacci number.
     '''
