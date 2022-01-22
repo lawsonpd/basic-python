@@ -1,8 +1,8 @@
 def mid_val(lower:float, upper:float) -> float:
     '''
         Essentially finding the mean, but since it's the boundaries of a continuous
-        interval, we don't need to (and indeed cannot) sum the intermediary values,
-        but 
+        interval, we don't need to (and can't really without calculus) sum the intermediary 
+        values, but 
     '''
     return (lower + upper) / 2
 
