@@ -1,60 +1,59 @@
-while True:
+import math
 
-    print("\nI'll try to guess the number you're thinking of.")
+from typing import List
 
-    min_num = int(input("What is the lower bound? "))
-    max_num = int(input("What is the upper bound? "))
+# Huge bug: actual (i.e., original) index is lost in recursive calls. Could try passing as kwarg.
+# def binary_search(n:int, items:list) -> int:
+#     i = math.floor(len(items) / 2) # index of middle element
+#     current_item = items[i] # middle item
+#     print(f'Index: {i}, current item: {current_item}')
+#     if current_item == n:
+#         return i
+#     elif current_item < n:
+#         return binary_search(n, items[i+1:])
+#     elif current_item > n:
+#         return binary_search(n, items[:i])
+#     else:
+#         return None
 
-    # Validate input: min_num can't be greater than max_num
-    while min_num > max_num:
-        print("Lower bound must not be greater than the upper bound.\n")
-        min_num, max_num = int(input("What is the lower bound? ")), int(input("What is the upper bound? "))
+def mid_val(lower:float, upper:float) -> float:
+    '''
+        Essentially finding'''
+    return (lower + upper) / 2
 
-    num_tries = int(input("How many guesses should I get? "))
+# Simple test to show that mid_val is equivalent to mean:
+# mean = lambda numbers: sum(numbers) / len(numbers) # `numbers` is a list of values
+# for m in range(10, 20):
+#     print(mid_val(m, m+10) == mean(range(m, m+11))) # True, True, ..., True
 
-    # Validate input
-    while num_tries < 1:
-        num_tries = input("Number of guesses must be 1 or greater.\nPlease try again: ")
+def main():
+    while True: # Main loop; break when user no longer wants to play.
+        print("Pick a number, and I'll try to guess it!")
+        print("\nFirst, let's choose a lower and an upper bound.")
+        lower = input("What is the lower bound? ")
+        upper = input("And what is the upper bound? ")
+        attempts_allowed = input("Finally, how many guesses am I allowed? ")
+        print("\nLet's get to it!")
 
-    print(f"Great! I have {num_tries} guesses. Let's go!")
+        for guess_attempt in range(attempts_allowed): # Turn into recursive function that takes `lower`, `upper`, and `attempts_allowed`?
+            guess = mid_val()
+            result = input(f'My guess is {guess}. Is that [h]igh, [l]ow, or [c]orrect? ')
+            
+            while result not in 'hlc':
+                result = input("Your response must be either 'h' (high), 'l' (low), or 'c' (correct). Please try again: ")
+            
+            if result == "c":
+                try_conj = "try" if guess_attempt == 0 else "tries"
+                print(f'Got it! I guessed your number in {guess_attempt + 1} {try_conj}. Thanks for playing!')
+                break
+            if result == "h":
+                upper = guess
+            if result == "l":
+                lower = guess
 
-    attempts_so_far = 0 # Number of guesses made
+        print(f'\nDarn! I guessed {attempts_allowed} times and still didn\'t find your number!')
+        play_again = input("Would you like to play again? [y/N]: ")
+        if play_again not in "Yyes": break
 
-    while True:
-        guess = int(((max_num - min_num) / 2) + min_num)
-
-        if guess < min_num or guess > max_num:
-            print("You tricked me!")
-            break
-
-        attempts_so_far += 1
-
-        print("This is attempt number", attempts_so_far, "out of", num_tries)
-        print("My guess is", guess)
-        guess_result = input("Is that [c]orrect, [h]igh, or [l]ow? ")
-
-        if guess_result == "h":
-            max_num = guess - 1
-
-        if guess_result == "l":
-            min_num = guess + 1
-
-        if guess_result == "c":
-            print("\nI guessed your number! It was", guess)
-            print("It took me", attempts_so_far, "tries to get it right.")
-            break
-
-        # Validate input
-        else:
-            while guess_result not in "hlc":
-                guess_result = input("Please choose either [c]orrect, [h]igh, or [l]ow: ")
-
-        if attempts_so_far >= num_tries:
-            print("\nI ran out of guesses! Sorry.\n")
-            break
-
-    user_choice = input("\nDo you want to play again? [y]es or [n]o? ")
-    
-    if user_choice == "n": break
-
-print ("\nThanks for playing! Goodbye.\n")
+if __name__ == '__main__':
+    main()
