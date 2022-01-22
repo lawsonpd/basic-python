@@ -14,8 +14,8 @@ def play_game(attempts_allowed:int, lower, upper, val_type) -> dict:
             upper = guess
         if result == "l":
             lower = guess
-        print(f'lower: {lower}; upper: {upper}; u/l diff: {upper - lower}; precision: {precision}')
-        if round(upper - lower, precision) <= eval(f'1e{precision}'):
+        print(f'lower: {lower}; upper: {upper}; u/l diff: {round(upper - lower, precision)}; precision: {precision}') # Debug
+        if eval(f'1e{1-precision-1}') <= round(upper - lower, precision) <= eval(f'1e{1-precision}'):
             precision += 1
     return attempts_taken
 
